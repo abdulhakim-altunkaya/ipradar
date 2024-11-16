@@ -27,9 +27,53 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: green;
 }
 
 .mainArea h1 {
   font-family: "Concert One";
   font-size: 44px;
+}
+
+.userArea {
+  background-color: #c3c3c3;
+  width: 350px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+}
+
+.userArea input {
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+.userArea button {
+  margin-bottom: 30px;
+}
+
+.displayArea {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin: auto;
+  background-color: aquamarine;
+}
+
+.mapArea, .infoArea {
+  flex: 1; /* Both containers take equal width */
+  flex-shrink: 0; /* Prevent shrinking of either container */
+  overflow-x: hidden; /* Prevent horizontal overflow */
+  overflow-y: auto; /* Allow vertical scrolling for overflowing content */
+  word-wrap: break-word; /* Force long words to break */
+  height: auto; /* Ensure containers grow vertically as needed */
+}
+
+.mapArea {
+  background-color: pink;
+}
+.infoArea {
+  background-color: tomato;
 }

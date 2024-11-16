@@ -1,74 +1,47 @@
 import React, { useState } from 'react';
-import "../styles/select.css";
+import "../styles/button.css";
+import DisplayInfo from "./DisplayInfo";
+import DisplayMap from "./DisplayMap";
+
 
 function Main() {
-  // Available file types
-  const fileTypes = ['TXT', 'PDF', 'DOCX', 'PNG', 'JPG', 'Markdown'];
+    const [ipInput, setIpInput] = useState("");
+    const [result1, setResult1] = useState(null);
 
-  // State to store selected 'from' and 'to' file types
-  const [fromType, setFromType] = useState('');
-  const [toType, setToType] = useState('');
+    const handleLookup = async () => {
+      try {
+        setResult1("Lookup sucessful");
+/*         const response = await fetch(`/api/lookup`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ip }),
+        });
+        const data = await response.json();
+        setResult(data); */
+      } catch (error) {
+        console.log(error.message);
+        setResult1({error: "Unable to fetch details"});
+      }
+    }
 
-  // Handler functions for select elements
-  const handleFromTypeChange = (e) => {
-    setFromType(e.target.value);
-  };
+    return (
+        <div className='mainArea'>
+          <h1>IP RADAR</h1>
+          <div className='userArea'>
+              <input type='text' placeholder='Enter IP address' 
+                value={ipInput} onChange={ (e) => setIpInput(e.target.value)}/>
+              <button className='button1010' onClick={handleLookup}>ANALYZE</button>
+          </div>
+          <div className='displayArea'>
+            <DisplayInfo result2 = {result1} />
+            <DisplayMap/>
+          </div>
 
-  const handleToTypeChange = (e) => {
-    setToType(e.target.value);
-  };
 
-  return (
-    <div className='mainArea'>
-      <h1>Nusaybin Converter</h1>
-      <div className='formAreaParent'>
-        <div className='formAreaChild'>
-          <label htmlFor='labelFrom'>From</label>
-          <select id='labelFrom' className='selectAreas'> 
-            <option value='' disabled>Select File Type</option>
-            {fileTypes.map( (fileTarget1) => (
-              <option value={fileTarget1} key={fileTarget1}>{fileTarget1}</option>
-            ))}
-          </select>
+
+
         </div>
-        <div className='formAreaChild'>
-          <label htmlFor='labelTo'>To</label>
-          <select id='labelTo' className='selectAreas'> 
-            <option value='' disabled>Select File Type</option>
-            {fileTypes.map( (fileTarget2) => (
-              <option key={fileTarget2} value={fileTarget2}>{fileTarget2}</option>
-            ))}
-          </select>
-        </div>
-      </div>
-
-
-{/* 
-      <label htmlFor="fromType">Convert from: </label>
-      <select id="fromType" value={fromType} onChange={handleFromTypeChange}>
-        <option value="" disabled>Select file type</option>
-        {fileTypes.map((type) => (
-          <option key={type} value={type}>{type}</option>
-        ))}
-      </select>
-
-
-      <label htmlFor="toType"> to: </label>
-      <select id="toType" value={toType} onChange={handleToTypeChange}>
-        <option value="" disabled>Select file type</option>
-        {fileTypes.map((type) => (
-          <option key={type} value={type}>{type}</option>
-        ))}
-      </select>
-
-
-      {fromType && toType && (
-        <p>
-          You are converting from <strong>{fromType}</strong> to <strong>{toType}</strong>.
-        </p>
-      )} */}
-    </div>
-  );
+    );
 }
 
 export default Main;
