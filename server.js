@@ -3,7 +3,11 @@ const axios = require("axios");
 const dotenv = require("dotenv");
 
 const app = express();
-app.use(express());
+app.use(express.json());//Set express middleware to parse JSON. In other words,
+//if you send data to backedn in req.body then you need this code
+
+const cors = require("cors");
+app.use(cors());
 
 // Load environment variables from .env file
 dotenv.config();
@@ -28,10 +32,11 @@ app.post('/api/reverse-geocode', async (req, res) => {
 
 // IP-based geolocation endpoint
 app.post("/api/get-coordinates", async (req, res) => {
-  const { ip } = req.body; // Get IP address from the request body
+  const { ipInput } = req.body; // Get IP address from the request body
+  console.log(ipInput);
   try {
       const apiKey = process.env.IPAPI_KEY; // Load API key from .env file
-      const response = await axios.get(`https://ipapi.co/${ip}/json/?key=${API_KEY}`);
+     const response = await axios.get(`http://api.ipapi.com/api/${ipInput}?access_key=${apiKey}`);
       const { latitude, longitude } = response.data;
       // Send latitude and longitude in the response
       console.log(response.data);
