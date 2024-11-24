@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import "../styles/button.css";
 import DisplayInfo from "./DisplayInfo";
 import DisplayMap from "./DisplayMap";
@@ -7,6 +8,20 @@ import DisplayMap from "./DisplayMap";
 function Main() {
     const [ipInput, setIpInput] = useState("");
     const [result1, setResult1] = useState(null);
+
+    const [ip, setIp] = useState(""); // State for the input IP address
+    const handleGeolocation = async () => {
+        try {
+            // Send the IP to the backend
+            const response = await axios.post("http://localhost:5000/api/get-coordinates", { ip });
+            const { latitude, longitude } = response.data;
+
+            // Log the coordinates in the console
+            console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+        } catch (error) {
+            console.error("Error fetching geolocation data:", error.message);
+        }
+    };
 
     const handleLookup = async () => {
       try {

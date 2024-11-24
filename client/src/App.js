@@ -1,9 +1,9 @@
-import DisplayMap from "./components/DisplayMap";
+import Main from "./components/Main";
 
 function App() {
   return (
     <div className="App">
-      <DisplayMap />
+      <Main />
     </div>
   );
 }

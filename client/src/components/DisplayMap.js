@@ -21,28 +21,7 @@ const App = () => {
 
     return (
         <div style={{ padding: '20px' }}>
-            <h1>OpenStreetMap Integration</h1>
-            <form onSubmit={handleSubmit} style={{ marginBottom: '20px' }}>
-                <label>
-                    Latitude:
-                    <input
-                        type="number"
-                        value={latitude}
-                        onChange={(e) => setLatitude(parseFloat(e.target.value))}
-                        style={{ margin: '0 10px' }}
-                    />
-                </label>
-                <label>
-                    Longitude:
-                    <input
-                        type="number"
-                        value={longitude}
-                        onChange={(e) => setLongitude(parseFloat(e.target.value))}
-                        style={{ margin: '0 10px' }}
-                    />
-                </label>
-                <button type="submit">Update Map</button>
-            </form>
+            <button onClick={handleSubmit} >Update Map</button>
             <p>{locationDetails}</p>
             <MapComponent latitude={latitude} longitude={longitude} />
         </div>
