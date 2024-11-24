@@ -1,31 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MapComponent from './MapComponent';
-import axios from 'axios';
 
-const App = () => {
-    const [latitude, setLatitude] = useState(56.9496);
-    const [longitude, setLongitude] = useState(24.1052);
-    const [locationDetails, setLocationDetails] = useState('');
+const DisplayMap = ({ userLatitude2, userLongitude2 }) => {
+    const [latitude, setLatitude] = useState(56.9496); // Default latitude (Riga)
+    const [longitude, setLongitude] = useState(24.1052); // Default longitude
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await axios.post('http://localhost:5000/api/reverse-geocode', { latitude, longitude });
-            const { city, country } = response.data;
-            setLocationDetails(`${city}, ${country}`);
-        } catch (error) {
-            console.error('Error fetching location details:', error.message);
-            setLocationDetails('Failed to fetch location details');
+    useEffect(() => {
+        // Update latitude and longitude whenever props change
+        if (userLatitude2 !== null && userLongitude2 !== null) {
+            setLatitude(userLatitude2);
+            setLongitude(userLongitude2);
+
         }
-    };
+    }, [userLatitude2, userLongitude2]);
 
     return (
         <div style={{ padding: '20px' }}>
-            <button onClick={handleSubmit} >Update Map</button>
-            <p>{locationDetails}</p>
+            {/* Pass the updated latitude and longitude to the MapComponent */}
             <MapComponent latitude={latitude} longitude={longitude} />
         </div>
     );
 };
 
-export default App;
+export default DisplayMap;

@@ -8,14 +8,17 @@ import DisplayMap from "./DisplayMap";
 function Main() {
     const [ipInput, setIpInput] = useState("");
     const [result1, setResult1] = useState(null);
+    const [userLatitude, setUserLatitude] = useState(null);
+    const [userLongitude, setUserLongitude] = useState(null);
 
     const handleGeolocation = async () => {
         try {
             const response = await axios.post("http://localhost:5000/api/get-coordinates", { ipInput });
             console.log(response.data);
-
-/*             const { latitude, longitude } = response.data;
-            console.log(`Latitude: ${latitude}, Longitude: ${longitude}`); */
+            const { latitude, longitude } = response.data;
+            setUserLatitude(latitude);
+            setUserLongitude(longitude);
+            console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
         } catch (error) {
             console.error("Error fetching geolocation data:", error.message);
         }
@@ -31,7 +34,7 @@ function Main() {
           </div>
           <div className='displayArea'>
             <DisplayInfo result2 = {result1} />
-            <DisplayMap/>
+            <DisplayMap userLatitude2={userLatitude} userLongitude2={userLongitude}/>
           </div>
         </div>
     );
