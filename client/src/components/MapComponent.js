@@ -9,13 +9,15 @@ const MapComponent = ({ latitude, longitude }) => {
     useEffect(() => {
         if (!mapRef.current) {
             // Initialize the map if it hasn't been created yet
-            const map = L.map('map').setView([latitude, longitude], 13);
+            const map = L.map('map').setView([latitude, longitude], 9); // Adjust zoom level for a broader view
 
-            // Add OpenStreetMap tile layer
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-            }).addTo(map);
-
+            // Carto Voyager tiles
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/">CARTO</a>',
+                subdomains: 'abcd',
+                maxZoom: 19,
+            }).addTo(map);        
+            
             // Create a custom icon using FontAwesome
             const customIcon = L.divIcon({
                 className: 'custom-div-icon', // Custom class for styling
@@ -30,7 +32,7 @@ const MapComponent = ({ latitude, longitude }) => {
         } else {
             // Update map view and marker position when coordinates change
             const { map, marker } = mapRef.current;
-            map.setView([latitude, longitude], 13);
+            map.setView([latitude, longitude], 9); // Adjust zoom level for a broader view
             marker.setLatLng([latitude, longitude]);
         }
     }, [latitude, longitude]);
@@ -39,7 +41,3 @@ const MapComponent = ({ latitude, longitude }) => {
 };
 
 export default MapComponent;
-
-
-
-

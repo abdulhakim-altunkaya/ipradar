@@ -10,7 +10,6 @@ const DisplayMap = ({ userLatitude2, userLongitude2 }) => {
         if (userLatitude2 !== null && userLongitude2 !== null) {
             setLatitude(userLatitude2);
             setLongitude(userLongitude2);
-
         }
     }, [userLatitude2, userLongitude2]);
 
