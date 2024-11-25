@@ -3,6 +3,8 @@ import axios from 'axios';
 import "../styles/button.css";
 import DisplayInfo from "./DisplayInfo";
 import DisplayMap from "./DisplayMap";
+import Footer from "./Footer";
+import CommentDisplay from "./CommentDisplay";
 
 
 function Main() {
@@ -51,20 +53,28 @@ function Main() {
     };
 
     return (
-        <div className='mainArea'>
-          <h1>IP RADAR</h1>
-          <div className='userArea'>
-              <input type='text' placeholder='Enter IP address' 
-                value={ipInput} onChange={ (e) => setIpInput(e.target.value)}/>
-              <button className='button1010' onClick={handleGeolocation}>ANALYZE</button>
+      <>
+          <div className='mainArea'>
+            <h1>IP RADAR</h1>
+            <div className='userArea'>
+                <input type='text' placeholder='Enter IP address' className='inputFields'
+                  value={ipInput} onChange={ (e) => setIpInput(e.target.value)}/>
+                <button className='button1010' onClick={handleGeolocation}>LOCATE</button>
+            </div>
+            <div className='displayArea'>
+              <DisplayInfo dataContinent2={dataContinent} dataCountry2={dataCountry} 
+                dataCity2={dataCity} dataTypeConnection2={dataTypeConnection} dataTypeIP2={dataTypeIP}
+                dataLatitude2={userLatitude} dataLongitude2={userLongitude} />
+              <DisplayMap userLatitude2={userLatitude} userLongitude2={userLongitude}/>
+            </div>
+          </div>  
+          <div> <br/><br/><br/><br/><br/><br/><br/> </div>
+          <div className='lowerContainerArea'>
+            <div> <CommentDisplay /></div>
+            <div> <br/><br/><br/> <Footer /> </div> 
           </div>
-          <div className='displayArea'>
-            <DisplayInfo dataContinent2={dataContinent} dataCountry2={dataCountry} 
-              dataCity2={dataCity} dataTypeConnection2={dataTypeConnection} dataTypeIP2={dataTypeIP}
-              dataLatitude2={userLatitude} dataLongitude2={userLongitude} />
-            <DisplayMap userLatitude2={userLatitude} userLongitude2={userLongitude}/>
-          </div>
-        </div>
+      </>
+
     );
 }
 

@@ -18,16 +18,17 @@
 body {
   margin: 0;
   font-family: 'Trebuchet MS';
+  width: 50%;
+  margin: auto;
+  margin-bottom: 20px;
 }
 
 .mainArea {
-  width: 50%;
-  margin: auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: green;
+  background-color: white;
 }
 
 .mainArea h1 {
@@ -36,7 +37,7 @@ body {
 }
 
 .userArea {
-  background-color: #c3c3c3;
+  background-color: #e9e9e9;
   width: 350px;
   margin: auto;
   display: flex;
@@ -59,7 +60,7 @@ body {
   flex-direction: row;
   width: 100%;
   margin: auto;
-  background-color: aquamarine;
+  background-color: white;
 }
 
 .mapArea, .infoArea {
@@ -74,6 +75,14 @@ body {
 .mapArea {
   background-color: pink;
 }
+#map {
+  box-shadow: 0 4px 8px black;
+  border-radius: 8px;
+}
 .infoArea {
-  background-color: tomato;
+  background-color: white;
+  font-size: 19px;
+  font-family: "Maven Pro", 'Trebuchet MS', sans-serif;
+  padding: 10px;
+  line-height: 27px;
 }

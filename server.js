@@ -102,6 +102,87 @@ app.post("/serversavevisitor", async (req, res) => {
   }
 })
 
+//A temporary cache to save ip addresses and it will prevent spam comments and replies for 1 minute.
+//I can do that by checking each ip with database ip addresses but then it will be too many requests to db
+const ipCache2 = {}
+app.post("/serversavecomment", async (req, res) => {
+  //preventing spam comments
+  const ipVisitor = req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'].split(',')[0] : req.socket.remoteAddress || req.ip;
+  // Check if IP exists in cache and if last comment was less than 1 minute ago
+  
+  if (ipCache2[ipVisitor] && Date.now() - ipCache2[ipVisitor] < 60000) {
+    return res.status(429).json({message: 'Too many comments'});
+  }
+ 
+  ipCache2[ipVisitor] = Date.now();//save visitor ip to ipCache2
+
+  let client;
+  const newComment = req.body;
+  const {name, text, date} = newComment;
+
+  try {
+    client = await pool.connect();
+    const result = await client.query(
+      `INSERT INTO ipradar_comments (date, name, comment) values ($1, $2, $3)`, [date, name, text]
+    );
+    res.status(201).json({message: "Comment saved"});
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({message: "Error while saving comment"})
+  } finally {
+    if(client) client.release();
+  }
+});
+
+app.post("/serversavecommentreply", async (req, res) => {
+  //preventing spam replies
+  const ipVisitor = req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'].split(',')[0] : req.socket.remoteAddress || req.ip;
+  // Check if IP exists in cache and if last reply was less than 1 minute ago
+  if (ipCache2[ipVisitor] && Date.now() - ipCache2[ipVisitor] < 60000) {
+    return res.status(429).json({message: 'Too many comments'});
+  }
+  ipCache2[ipVisitor] = Date.now();//save visitor ip to ipCache2
+
+  let client;
+  const newComment = req.body;
+  const {name, text, date, commentId} = newComment;
+
+  try {
+    client = await pool.connect(); 
+    const result = await client.query(
+      `INSERT INTO ipradar_comments (date, name, comment, parent_id) values ($1, $2, $3, $4)`, 
+      [date, name, text, commentId]
+    );
+    res.status(201).json({message: "Reply saved"});
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({message: "Error while saving reply"})
+  } finally {
+    if(client) client.release();
+  }
+});
+
+app.get("/servergetcomments", async (req, res) => {
+  let client;
+  try {
+    client = await pool.connect(); 
+    const result = await client.query(
+      `SELECT * FROM ipradar_comments`
+    );
+    const allComments = await result.rows;
+    if(!allComments) {
+      return res.status(404).json({ message: "No comments yet"})
+    }
+    res.status(200).json(allComments);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({message: "Error while fetching comments"})
+  } finally {
+    if(client) client.release();
+  }
+});
+
+
 const PORT = 5000;
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
 

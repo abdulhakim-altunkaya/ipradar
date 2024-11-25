@@ -34,3 +34,32 @@
   50% { box-shadow: 0 0 20px rgba(254, 231, 21, 0.8); }
   100% { box-shadow: 0 0 5px rgba(254, 231, 21, 0.8); }
 } 
+
+
+
+
+
+
+
+    /*<input className="inputFields" />*/
+    .inputFields {
+      height: 40px;
+      width: 190px;
+      font-size: 21px;
+      font-family: "Fredoka One";
+      border-radius: 5px;
+    }
+    .inputFields:focus {
+      background-color: lightsalmon;
+      color:black;
+    }
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    /* Firefox */
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
