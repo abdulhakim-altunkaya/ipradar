@@ -14,7 +14,7 @@ const DisplayMap = ({ userLatitude2, userLongitude2 }) => {
     }, [userLatitude2, userLongitude2]);
 
     return (
-        <div style={{ padding: '20px' }}>
+        <div className='mapContainerDiv'>
             {/* Pass the updated latitude and longitude to the MapComponent */}
             <MapComponent latitude={latitude} longitude={longitude} />
         </div>

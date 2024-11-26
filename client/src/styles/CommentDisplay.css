@@ -84,9 +84,8 @@
 @media (max-width: 780px) {
 
   .comments-list {
-    min-width: 100%;
-    max-width: 100%;
-    margin-left: -2px;
+    min-width: 97%;
+    max-width: 97%;
     padding: 8px;
     background-color: #f9f9f9;
     border-radius: 8px;

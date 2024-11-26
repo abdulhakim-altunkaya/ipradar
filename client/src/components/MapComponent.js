@@ -37,7 +37,7 @@ const MapComponent = ({ latitude, longitude }) => {
         }
     }, [latitude, longitude]);
 
-    return <div id="map" style={{ height: '300px', width: '300px' }}></div>; // Small map container
+    return <div id="map" ></div>; // Small map container
 };
 
 export default MapComponent;

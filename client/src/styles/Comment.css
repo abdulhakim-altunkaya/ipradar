@@ -7,6 +7,7 @@
       border-radius: 4px;
       background-color: #f1ec81;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      
     }
 
     .comment-form {
@@ -120,7 +121,7 @@
       border: 1px solid #ddd;
       border-radius: 4px;
       background-color: #f1ec81;
-
+      margin-bottom: 20px;
     }
     .comment-form {
       display: flex;
