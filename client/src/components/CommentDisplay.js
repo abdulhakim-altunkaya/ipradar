@@ -17,7 +17,7 @@ function CommentDisplay() {
   useEffect(() => {
       const getComments = async () => {
         try {
-          const response = await axios.get("http://localhost:5000/servergetcomments");
+          const response = await axios.get("/servergetcomments");
           const fetchedComments = Array.isArray(response.data) ? response.data : [];
           setComments(fetchedComments);
           const replies = fetchedComments.filter(comment => comment.parent_id !== null);

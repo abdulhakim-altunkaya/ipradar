@@ -22,7 +22,7 @@ function Main() {
     useEffect(() => {
       const getData = () => {
         // Fire-and-forget request to log visitor data
-        axios.post("http://localhost:5000/serversavevisitor", {})
+        axios.post("/serversavevisitor", {})
           .then((response) => {
             console.log('Visitor logged successfully:', response.data.myMessage);
           })
@@ -37,7 +37,7 @@ function Main() {
 
     const handleGeolocation = async () => {
         try {
-            const response = await axios.post("http://localhost:5000/api/get-coordinates", { ipInput });
+            const response = await axios.post("/api/get-coordinates", { ipInput });
             //we use axios "post" here instead of "get" because we sent data in req.body
             const { latitude, longitude, country_name, city, connection_type, type, continent_name } = response.data;
             setUserLatitude(latitude);
