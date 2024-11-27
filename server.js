@@ -1,19 +1,22 @@
 const express = require("express");
+const app = express();
 const axios = require("axios");
+const path = require('path');
 const dotenv = require("dotenv");
+// Load environment variables from .env file
+dotenv.config();
 const { pool } = require("./db");
 const useragent = require('useragent');
-const path = require('path');
-
-const app = express();
-app.use(express.json());//Set express middleware to parse JSON. In other words,
-//if you send data to backedn in req.body then you need this code
 
 const cors = require("cors");
 app.use(cors());
 
-// Load environment variables from .env file
-dotenv.config();
+app.use(express.json());//Set express middleware to parse JSON. In other words,
+//if you send data to backedn in req.body then you need this code
+
+
+app.set('trust proxy', true);
+
 
 //Then go to server.js file and make sure you serve static files from build directory:
 app.use(express.static(path.join(__dirname, 'client/build')));
