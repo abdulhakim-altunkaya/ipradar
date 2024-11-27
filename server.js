@@ -14,6 +14,9 @@ app.use(cors());
 // Load environment variables from .env file
 dotenv.config();
 
+//Then go to server.js file and make sure you serve static files from build directory:
+app.use(express.static(path.join(__dirname, 'client/build')));
+
 // Reverse geocoding endpoint
 app.post('/api/reverse-geocode', async (req, res) => {
   const { latitude, longitude } = req.body;
