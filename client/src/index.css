@@ -114,7 +114,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: blue;
   }
   
   .mainArea h1 {
@@ -123,7 +122,6 @@
   }
   
   .userArea {
-    background-color: red;
     width: 90%;
     margin: auto;
     display: flex;
