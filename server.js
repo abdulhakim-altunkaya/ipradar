@@ -69,7 +69,7 @@ app.post("/api/get-coordinates", async (req, res) => {
 });
 
 // List of IPs to ignore (server centers, ad bots, my ip etc)
-const ignoredIPs = ["::1"];
+const ignoredIPs = [];
 //A temporary cache to save ip addresses and it will prevent saving same ip addresses for 1 hour.
 //I can do that by checking each ip with database ip addresses but then it will be too many requests to db
 //We will save each visitor data to database. 
@@ -130,8 +130,8 @@ app.post("/api/save-visitor/schengen", async (req, res) => {
       resErrorCode: 1
     });
   }
-  // Check if IP exists in cache and if last visit was less than 1 hour ago
-  if (ipCache3[ipVisitor] && Date.now() - ipCache3[ipVisitor] < 3600000) {
+  // Check if IP exists in cache and if last visit was less than 1 hour ago -- 3600000
+  if (ipCache3[ipVisitor] && Date.now() - ipCache3[ipVisitor] < 10000) {
     return res.status(429).json({
       resStatus: false,
       resMessage: "Too many requests from this IP.",
