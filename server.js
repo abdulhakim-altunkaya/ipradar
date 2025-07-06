@@ -10,6 +10,18 @@ const useragent = require('useragent');
 
 const cors = require("cors");
 app.use(cors());
+/*
+const allowedOrigins = ['https://www.apple.com', 'https://www.myfrontend.com'];
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error('Not allowed by CORS'));
+  }
+}));
+*/
+
 
 app.use(express.json());//Set express middleware to parse JSON. In other words,
 //if you send data to backedn in req.body then you need this code
@@ -56,14 +68,12 @@ app.post("/api/get-coordinates", async (req, res) => {
   }
 });
 
-
+// List of IPs to ignore (server centers, ad bots, my ip etc)
+const ignoredIPs = ["::1"];
 //A temporary cache to save ip addresses and it will prevent saving same ip addresses for 1 hour.
 //I can do that by checking each ip with database ip addresses but then it will be too many requests to db
 //We will save each visitor data to database. 
 const ipCache = {}
-// List of IPs to ignore (server centers, ad bots, my ip etc)
-const ignoredIPs = ["::1"];
-
 app.post("/serversavevisitor", async (req, res) => {
   //Here we could basically say "const ipVisitor = req.ip" but my app is running on Render platform
   //and Render is using proxies or load balancers. Because of that I will see "::1" as ip data if I not use
@@ -105,6 +115,63 @@ app.post("/serversavevisitor", async (req, res) => {
   }
 })
 
+const ipCache3 = {}
+app.post("/api/save-visitor/schengen", async (req, res) => {
+  //Here we could basically say "const ipVisitor = req.ip" but my app is running on Render platform
+  //and Render is using proxies or load balancers. Because of that I will see "::1" as ip data if I not use
+  //this line below
+  const ipVisitor = req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'].split(',')[0] : req.socket.remoteAddress || req.ip;
+  let client;
+  // Check if the IP is in the ignored list
+  if (ignoredIPs.includes(ipVisitor)) {
+    return res.status(403).json({
+      resStatus: false,
+      resMessage: "This IP is ignored from logging to Database",
+      resErrorCode: 1
+    });
+  }
+  // Check if IP exists in cache and if last visit was less than 1 hour ago
+  if (ipCache3[ipVisitor] && Date.now() - ipCache3[ipVisitor] < 3600000) {
+    return res.status(429).json({
+      resStatus: false,
+      resMessage: "Too many requests from this IP.",
+      resErrorCode: 2
+    });
+  }
+
+  ipCache3[ipVisitor] = Date.now();//save visitor ip to ipCache3
+  const userAgentString = req.get('User-Agent') || '';
+  const agent = useragent.parse(userAgentString);
+
+  try {
+    const visitorData = {
+      ip: ipVisitor,
+      os: agent.os.toString(), // operating system
+      browser: agent.toAgent(), // browser
+      visitDate: new Date().toLocaleDateString('en-GB')
+    };
+    //save visitor to database
+    client = await pool.connect();
+    const result = await client.query(
+      `INSERT INTO schengen_visitors (ip, op, browser, date) 
+      VALUES ($1, $2, $3, $4)`, [visitorData.ip, visitorData.os, visitorData.browser, visitorData.visitDate]
+    );
+    return res.status(200).json({
+      resStatus: true,
+      resMessage: "Visitor successfully logged.",
+      resOkCode: 1
+    });
+  } catch (error) {
+    console.error('Error logging visit:', error);
+    return res.status(500).json({
+      resStatus: false,
+      resMessage: "Database connection error while logging visitor.",
+      resErrorCode: 3
+    });
+  } finally {
+    if(client) client.release();
+  }
+});
 //A temporary cache to save ip addresses and it will prevent spam comments and replies for 1 minute.
 //I can do that by checking each ip with database ip addresses but then it will be too many requests to db
 const ipCache2 = {}
