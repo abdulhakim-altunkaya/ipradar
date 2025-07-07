@@ -9,9 +9,9 @@ const { pool } = require("./db");
 const useragent = require('useragent');
 
 const cors = require("cors");
-app.use(cors());
-/*
-const allowedOrigins = ['https://www.apple.com', 'https://www.myfrontend.com'];
+//app.use(cors());
+
+const allowedOrigins = ['https://www.apple.com', 'https://visacalculator.org'];
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
@@ -20,7 +20,7 @@ app.use(cors({
     return callback(new Error('Not allowed by CORS'));
   }
 }));
-*/
+
 
 
 app.use(express.json());//Set express middleware to parse JSON. In other words,
