@@ -153,7 +153,7 @@ app.post("/api/save-visitor/schengen", async (req, res) => {
     //save visitor to database
     client = await pool.connect();
     const result = await client.query(
-      `INSERT INTO schengen_visitors (ip, op, browser, date) 
+      `INSERT INTO visitors_schengen (ip, op, browser, date) 
       VALUES ($1, $2, $3, $4)`, [visitorData.ip, visitorData.os, visitorData.browser, visitorData.visitDate]
     );
     return res.status(200).json({
