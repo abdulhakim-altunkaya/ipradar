@@ -9,12 +9,9 @@ const { pool } = require("./db");
 const useragent = require('useragent');
 
 const cors = require("cors");
-app.use(cors());
-/*
-const cors = require("cors");
 //app.use(cors());//This line permits any request from any website
 
-const allowedOrigins = ['https://www.apple.com', 'https://visacalculator.org'];
+const allowedOrigins = ['https://einsteincalculators.com', 'https://visacalculator.org', 'https://www.ipradar.org'];
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
@@ -24,7 +21,7 @@ app.use(cors({
   }
 }));
 
-*/
+
 
 app.use(express.json());//Set express middleware to parse JSON. In other words,
 //if you send data to backedn in req.body then you need this code
