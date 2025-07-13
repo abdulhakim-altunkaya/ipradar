@@ -214,8 +214,8 @@ app.post("/api/save-visitor/schengen", async (req, res) => {
       resErrorCode: 1
     });
   }
-  // Check if IP exists in cache and if last visit was less than 1 hour ago -- 3600000
-  if (ipCache3[ipVisitor] && Date.now() - ipCache3[ipVisitor] < 3600000) {
+  // Check if IP exists in cache and if last visit was less than 16.67 minutes ago
+  if (ipCache3[ipVisitor] && Date.now() - ipCache3[ipVisitor] < 1000000) {
     return res.status(429).json({
       resStatus: false,
       resMessage: "Too many requests from this IP.",
@@ -274,8 +274,8 @@ app.post("/api/save-visitor/einstein/:sectionName", async (req, res) => {
       resErrorCode: 1
     });
   }
-  // Check if IP exists in cache and if last visit was less than 1 hour ago -- 3600000
-  if (ipCache4[ipVisitor] && Date.now() - ipCache4[ipVisitor] < 10000) {
+  // Check if IP exists in cache and if last visit was less than 16.67 minutes ago
+  if (ipCache4[ipVisitor] && Date.now() - ipCache4[ipVisitor] < 1000000) {
     return res.status(429).json({
       resStatus: false,
       resMessage: "Too many requests from this IP.",
